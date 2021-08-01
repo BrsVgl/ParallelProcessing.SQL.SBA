@@ -2,7 +2,10 @@
 AS
    DECLARE @conversationHandle UNIQUEIDENTIFIER;
    DECLARE @messageTypeName SYSNAME;
-   DECLARE @message nvarchar(max)
+   DECLARE @message xml
+
+   WAITFOR DELAY '00:00:05'
+
    BEGIN TRANSACTION;
    RECEIVE TOP(1) 
       @conversationHandle = conversation_handle,
@@ -13,11 +16,21 @@ AS
    BEGIN
       --DELETE FROM broker.Conversation
       --WHERE ConversationHandle = @conversationHandle;
-      IF @messageTypeName = EndOfMessageStream
+      IF @messageTypeName = 'EndOfMessageStream'
          END CONVERSATION @conversationHandle;
-      ELSE IF @messageTypeName = InsertedWorkloadMessage
+      ELSE IF @messageTypeName = 'InsertedWorkloadMessage'
       BEGIN
-         SELECT @message
+        ;WITH IdList AS (
+          SELECT 
+            Id = x.c.value('(./Id)[1]', 'int')
+          FROM @message.nodes('INSERTED') x(c)
+        )
+        UPDATE wl 
+        SET 
+          [Output] = Input 
+          , OutputCreated = GETDATE()
+        FROM dbo.Workload wl
+        JOIN IdList cI ON wl.Id = cI.Id
       END
    END
    COMMIT TRANSACTION;

@@ -2,6 +2,9 @@
 AS
    DECLARE @conversationHandle UNIQUEIDENTIFIER;
    DECLARE @messageTypeName SYSNAME;
+
+   WAITFOR DELAY '00:00:05'
+
    BEGIN TRANSACTION;
    RECEIVE TOP(1) 
       @conversationHandle = conversation_handle,

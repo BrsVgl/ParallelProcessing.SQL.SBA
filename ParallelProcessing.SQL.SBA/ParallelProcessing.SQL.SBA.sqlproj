@@ -13,7 +13,7 @@
     </RootPath>
     <RootNamespace>ParallelProcessing.SQL.SBA</RootNamespace>
     <AssemblyName>ParallelProcessing.SQL.SBA</AssemblyName>
-    <ModelCollation>1033, CI</ModelCollation>
+    <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -23,6 +23,8 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <IncludeSchemaNameInFileName>True</IncludeSchemaNameInFileName>
+    <ServiceBrokerOption>EnableBroker</ServiceBrokerOption>
+    <DefaultCollation>German_PhoneBook_100_CI_AI</DefaultCollation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -66,6 +68,8 @@
     <Folder Include="broker\Services" />
     <Folder Include="broker\Contracts" />
     <Folder Include="broker\WorkerProcedures" />
+    <Folder Include="_Publish" />
+    <Folder Include="_Debugging" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\dbo.Workload.sql" />
@@ -80,5 +84,9 @@
     <Build Include="broker\Queues\broker.WorkloadClientQueue.sql" />
     <Build Include="broker\Services\WorkloadClientService.sql" />
     <Build Include="broker\WorkerProcedures\broker.WorkloadServerWorker.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_Publish\ParallelProcessing.SQL.SBA.publish.xml" />
+    <None Include="_Debugging\01_Misc.sql" />
   </ItemGroup>
 </Project>
