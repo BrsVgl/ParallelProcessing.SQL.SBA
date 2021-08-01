@@ -1,0 +1,2 @@
+﻿CREATE MESSAGE TYPE [InsertedWorkloadMessage]
+	VALIDATION = WELL_FORMED_XML
