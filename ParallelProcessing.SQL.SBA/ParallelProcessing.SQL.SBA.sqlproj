@@ -70,6 +70,8 @@
     <Folder Include="broker\WorkerProcedures" />
     <Folder Include="_Publish" />
     <Folder Include="_Debugging" />
+    <Folder Include="dbo\Functions" />
+    <Folder Include="dbo\Functions\Scalar" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\dbo.Workload.sql" />
@@ -84,9 +86,17 @@
     <Build Include="broker\Queues\broker.WorkloadClientQueue.sql" />
     <Build Include="broker\Services\WorkloadClientService.sql" />
     <Build Include="broker\WorkerProcedures\broker.WorkloadServerWorker.sql" />
+    <Build Include="dbo\Functions\Scalar\dbo.GenerateMd5.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="_Publish\ParallelProcessing.SQL.SBA.publish.xml" />
     <None Include="_Debugging\01_Misc.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
+      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
+    </ArtifactReference>
   </ItemGroup>
 </Project>

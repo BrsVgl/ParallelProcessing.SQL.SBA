@@ -4,8 +4,6 @@ AS
    DECLARE @messageTypeName SYSNAME;
    DECLARE @message xml
 
-   WAITFOR DELAY '00:00:05'
-
    BEGIN TRANSACTION;
    RECEIVE TOP(1) 
       @conversationHandle = conversation_handle,
@@ -14,10 +12,12 @@ AS
    FROM broker.WorkloadServerQueue
    IF @conversationHandle IS NOT NULL
    BEGIN
-      --DELETE FROM broker.Conversation
-      --WHERE ConversationHandle = @conversationHandle;
       IF @messageTypeName = 'EndOfMessageStream'
-         END CONVERSATION @conversationHandle;
+        OR @messageTypeName = N'http://schemas.microsoft.com/SQL/ServiceBroker/EndDialog'
+        OR @messageTypeName = N'http://schemas.microsoft.com/SQL/ServiceBroker/Error'
+        BEGIN
+          END CONVERSATION @conversationHandle;
+        END
       ELSE IF @messageTypeName = 'InsertedWorkloadMessage'
       BEGIN
         ;WITH IdList AS (
@@ -27,7 +27,7 @@ AS
         )
         UPDATE wl 
         SET 
-          [Output] = Input 
+          [Output] = [dbo].[GenerateMd5](Input)
           , OutputCreated = GETDATE()
         FROM dbo.Workload wl
         JOIN IdList cI ON wl.Id = cI.Id

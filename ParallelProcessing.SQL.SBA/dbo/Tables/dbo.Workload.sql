@@ -15,7 +15,7 @@ AS
    DECLARE @toService SYSNAME
    DECLARE @onContract SYSNAME
    DECLARE @messageBody XML
-   SET @fromService = 'WorkloadServerService'
+   SET @fromService = 'WorkloadClientService'
    SET @toService = 'WorkloadServerService'
    SET @onContract = 'InsertedWorkloadContract'
    -- Check if there is already an ongoing conversation with the TargetService
@@ -54,6 +54,5 @@ AS
 
    -- Send the message to the TargetService
    ;SEND ON CONVERSATION @ConversationHandle
-   MESSAGE TYPE InsertedWorkloadMessage 
-      (@messageBody);
+   MESSAGE TYPE InsertedWorkloadMessage (@messageBody);
 GO
