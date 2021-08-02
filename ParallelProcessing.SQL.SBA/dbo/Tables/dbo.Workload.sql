@@ -50,8 +50,6 @@ AS
    END
    -- Construct the request message
    SET @messageBody = (SELECT * FROM INSERTED FOR XML AUTO, ELEMENTS);
-   SELECT R = '[i__dbo.Workload__Enqueue]', messageBody = @messageBody;
-
    -- Send the message to the TargetService
    ;SEND ON CONVERSATION @ConversationHandle
    MESSAGE TYPE InsertedWorkloadMessage (@messageBody);

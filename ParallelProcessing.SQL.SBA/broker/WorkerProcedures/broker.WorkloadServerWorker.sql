@@ -20,6 +20,7 @@ AS
         END
       ELSE IF @messageTypeName = 'InsertedWorkloadMessage'
       BEGIN
+        WAITFOR DELAY '00:00:01'
         ;WITH IdList AS (
           SELECT 
             Id = x.c.value('(./Id)[1]', 'int')
